@@ -1,0 +1,71 @@
+{% extends "base.html" %} 
+{% block start %} 
+  
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> 
+<style> 
+  .text { 
+    color: rgb(128, 0, 0); 
+    font-weight: bold; 
+    font-family: 'Times New Roman', Times, serif; 
+  } 
+  .ok { 
+    color: white; 
+    text-decoration: none; 
+  } 
+  .ok:hover { 
+    color: white; 
+    text-decoration: none; 
+  } 
+</style> 
+  
+<div class="container mt-5 col-6"> 
+   
+    <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data"> 
+        {% csrf_token %} 
+        <br> 
+        <h4 style="font-family: 'Times New Roman', Times, serif;"> Cash Bag |   Считайте свои сбережения</h4> 
+        <hr> 
+        
+        <div class="form-group"> 
+          <label for="exampleInputEmail1">Причина дохода/расхода </label> 
+          <input type="text" name="name" class="form-control" required> 
+        </div> 
+        <div class="form-group"> 
+          <label for="exampleInputEmail1">Сумма (указывайте "-" если вписываете расходы)</label> 
+          <input name="price" type="number" class="form-control" required> 
+         </div> 
+        <button type="submit" class="btn btn-success">Добавить</button> 
+    </form> 
+  
+    <div class="class mt-5"> 
+        <form action=""> 
+          <button class="btn btn-primary"> <a class="ok" href="{% url 'pdf' %}">Общий отчёт  </a></button> 
+          <button class="btn btn-danger"> <a class="ok" href="{% url 'logout' %}">Выйти </a></button> 
+        </form> 
+  
+        <table class="table mt-6"> 
+            <thead> 
+                <tr> 
+                    <th scope="col"># </th> 
+                    <th scope="col">Причина</th> 
+                    <th scope="col">Сумма </th> 
+                    <th scope="col">Действия</th> 
+                </tr> 
+            </thead> 
+            <tbody> 
+                {% for expense in expenses %} 
+                <tr> 
+                    <th scope="row">{{forloop.counter}}</th> 
+                    <td>{{expense.name}}</td> 
+                    <td>{{expense.price}}</td> 
+  
+                    <td> 
+                        <a href="/delete_expense/{{expense.id }}" class="btn btn-danger m-2">Удалить </a> 
+                        <a href="/update_expense/{{expense.id }}" class="btn btn-success">Изменить </a> 
+                    </td> 
+                </tr> 
+                {% endfor %} 
+            </tbody> 
+        </table> 
+    </div> 
+{% endblock %} 
